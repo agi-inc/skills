@@ -1,6 +1,6 @@
 # 🪄 AI Skills Hub
 
-AI Skills is an open-source library aiming to simplify the integration of AI Skills into MULTION AI.
+AI Skills Hub is an open-source library aiming to simplify the integration of AI Skills into MULTION AI.
 
 It provides utility functions to get a list of active skills from [agihub.io](https://agihub.io/) directory, get skill manifests, and extract OpenAPI specifications and load skills.
 
