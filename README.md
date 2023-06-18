@@ -1,15 +1,15 @@
-# 🎸 Plug and Plai
+# 🎸 AI Skills Hub
 
-Plug and Plai is an open source library aiming to simplify the integration of AI plugins into open-source language models (LLMs).
+AI Skills is an open-source library aiming to simplify the integration of AI Skills into MULTION AI.
 
-It provides utility functions to get a list of active plugins from [plugnplai.com](https://plugnplai.com/) directory, get plugin manifests, and extract OpenAPI specifications and load plugins.
+It provides utility functions to get a list of active skills from [agihub.io](https://agihub.io/) directory, get skill manifests, and extract OpenAPI specifications and load skills.
 
 ## Installation
 
-You can install Plug and PlAI using pip:
+You can install it using pip:
 
 ```python
-pip install plugnplai
+pip install multion-skills
 ```
 
 ## Quick Start Example
@@ -35,124 +35,120 @@ pip install plugnplai
 Example:
 
 ```python
-import plugnplai
+import multion as ai
 
-# Get all plugins from plugnplai.com
-urls = plugnplai.get_plugins()
+# Get all plugins from agihub.io
+urls = ai.get_skills()
 
 #  Get ChatGPT plugins - only ChatGPT verified plugins
-urls = plugnplai.get_plugins(filter = 'ChatGPT')
+urls = ai.get_skills(filter = 'ChatGPT')
 
 #  Get working plugins - only tested plugins (in progress)
-urls = plugnplai.get_plugins(filter = 'working')
+urls = ai.get_skills(filter = 'working')
 
 #  Get plugins by category - only tested plugins (in progress)
-urls = plugnplai.get_plugins(category = 'travel')
+urls = ai.get_skills(category = 'travel')
 
 #  Get the names list of categories
-urls = plugnplai.get_category_names()
+urls = ai.get_category_names()
 ```
 
 ### Utility Functions
 
 Help to load the plugins manifest and OpenAPI specification
 
-- `manifest = get_plugin_manifest(url)`: Get the AI plugin manifest from the specified plugin URL.
-- `specUrl = get_openapi_url(url, manifest)`: Get the OpenAPI URL from the plugin manifest.
+- `manifest = get_skills_manifest(url)`: Get the AI Skill manifest from the specified skill URL.
+- `specUrl = get_openapi_url(url, manifest)`: Get the OpenAPI URL from the skill manifest.
 - `spec = get_openapi_spec(openapi_url)`: Get the OpenAPI specification from the specified OpenAPI URL.
-- `manifest, spec = spec_from_url(url)`: Returns the Manifest and OpenAPI specification from the plugin URL.
+- `manifest, spec = spec_from_url(url)`: Returns the Manifest and OpenAPI specification from the skill URL.
 
 Example:
 
 ```python
-import plugnplai
+import multion as ai
 
 # Get the Manifest and the OpenAPI specification from the plugin URL
-manifest, openapi_spec = plugnplai.spec_from_url(urls[0])
+manifest, openapi_spec = ai.spec_from_url(urls[0])
 ```
 
 
-### Load Plugins
+### Load Skills
 **Example:** [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/edreisMD/plugnplai/blob/main/examples/plugins_step_by_step.ipynb)
 
 ```python
-from plugnplai import Plugins
+from multion import Skills
 
-###### ACTIVATE A MAX OF 3 PLUGINS ######
-# Context length limits the number of plugins you can activate,
-# you need to make sure the prompt fits in your context lenght,
-# still leaving space for the user message
 
-# Initialize 'Plugins' by passing a list of urls, this function will
-# load the plugins and build a default description to be used as prefix prompt
-plugins = Plugins.install_and_activate(urls)
+# Initialize 'Skills' by passing a list of urls, this function will
+# load the skills and build a default description to be used as prefix prompt
+skilla = Skills.install_and_activate(urls)
 
 #  Print the deafult prompt for the activated plugins
-print(plugins.prompt)
+print(skills.prompt)
 
 #  Print the number of tokens of the prefix prompt
-print(plugins.tokens)
+print(skills.tokens)
 ```
 
 Example on installing (loading) all plugins, and activating a few later:
 
 ```python
-from plugnplai import Plugins
+from multion import Skills
 
 # If you just want to load the plugins, but activate only
-# some of them later use Plugins(urls) instead
-plugins = Plugins(urls)
+# some of them later use Skills(urls) instead
+skills = Skills(urls)
 
 # Print the names of installed plugins
-print(plugins.list_installed)
+print(skills.list_installed)
 
 # Activate the plugins you want
-plugins.activate(name1)
-plugins.activate(name2)
-plugins.activate(name3)
+skills.activate(name1)
+skills.activate(name2)
+skills.activate(name3)
 
 # Deactivate the last plugin
-plugins.deactivate(name3)
+skills.deactivate(name3)
 ```
 
 ### Prompt and Tokens Counting
 
-The `plugins.prompt` attribute contains a prompt with descriptions of the active plugins.
-The `plugins.tokens` attribute contains the number of tokens in the prompt.
+The `skills.prompt` attribute contains a prompt with descriptions of the active plugins.
+The `skills.tokens` attribute contains the number of tokens in the prompt.
 
 For example:
 ```python
-plugins = Plugins.install_and_activate(urls)
-print(plugins.prompt)
-print(plugins.tokens)
+skills = Skills.install_and_activate(urls)
+print(skills.prompt)
+print(skills.tokens)
 ```
-This will print the prompt with plugin descriptions and the number of tokens.
+This will print the prompt with skills descriptions and the number of tokens.
 
 
 ### Parse LLM Response for API Tag
 
-The `parse_llm_response()` function parses an LLM response searching for API calls. It looks for the `<API>` pattern defined in the `plugins.prompt` and extracts the plugin name, operation ID, and parameters.
+The `parse_llm_response()` function parses an LLM response searching for API calls. It looks for the `<API>` pattern defined in the `skills.prompt` and extracts the skills name, operation ID, and parameters.
 
 
 ### Call API
 
-The `call_api()` function calls an operation in an active plugin. It takes the plugin name, operation ID, and parameters extracted by `parse_llm_response()` and makes a request to the plugin API.
+The `call_api()` function calls an operation in an active skill. It takes the skills name, operation ID, and parameters extracted by `parse_llm_response()` and makes a request to the skills API.
 
 
 ### Apply Plugins
 
-The `@plugins.apply_plugins` decorator can be used to easily apply active plugins to an LLM function. To use it:
+The `@skills.apply_skills` decorator can be used to easily apply active plugins to an LLM function. To use it:
 
 1. Import the Plugins class and decorator:
 
 ```python
-from plugnplai import Plugins, plugins.apply_plugins
+from multion import Skills, skills.apply_skills
 ```
 
 2. Define your LLM function, that necessarily takes a string (the user input) as the first argument and returns a string (the response):
 
 ```python
-@plugins.apply_plugins
+@plugins.apply_skills
 def call_llm(user_input):
   ...
   return response
@@ -162,7 +158,7 @@ def call_llm(user_input):
 
 - Prepending the prompt (with plugin descriptions) to the user input 
 - Checking the LLM response for API calls (the <API>...</API> pattern)
-- Calling the specified plugins 
+- Calling the specified skills 
 - Summarizing the API calls in the LLM response
 - Calling the LLM function again with the summary to get a final response
 
@@ -170,52 +166,52 @@ def call_llm(user_input):
 
 To more details on the implementation of these steps, see example "Step by Step": [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/edreisMD/plugnplai/blob/main/examples/plugins_step_by_step.ipynb)
 
-### Plugins Retrieval
+### Skills Retrieval
 **Example:** [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/edreisMD/plugnplai/blob/main/examples/plugin_retriever_with_langchain_agent.ipynb)
 
 
 ```python
-from plugnplai import PluginRetriever
+from multion import SkillRetriever
 
-# Initialize the plugins retriever vector database and index the plugins descriptions.
-# Loading the plugins from plugnplai.com directory
-plugin_retriever = PluginRetriever.from_directory()
+# Initialize the skill retriever vector database and index the skill descriptions.
+# Loading the skills from agihub.io directory
+skill_retriever = SkillRetriever.from_directory()
 
-#  Retrieve the names of the plugins given a user's message
-plugin_retriever.retrieve_names("what shirts can i buy?")
+#  Retrieve the names of the skills given a user's message
+skill_retriever.retrieve_names("what shirts can i buy?")
 ```
 
 
 ## Contributing
 
-Plug and Plai is an open source library, and we welcome contributions from the entire community. If you're interested in contributing to the project, please feel free to fork, submit pull requests, report issues, or suggest new features.
+AI Skills is an open source library, and we welcome contributions from the entire community. If you're interested in contributing to the project, please feel free to fork, submit pull requests, report issues, or suggest new features.
 
 #### To dos
-- [x] [Load] Define a default object to read plugins - use LangChain standard? (for now using only manifest and specs jsons)  
-- [ ] [Load] Fix breaking on reading certain plugins specs  
+- [x] [Load] Define a default object to read skills - use LangChain standard? (for now using only manifest and specs jsons)  
+- [ ] [Load] Fix breaking on reading certain skills specs  
 - [x] [Load] Accept different specs methods and versions (param, query, body)  
-- [x] [Prompt] Build a utility function to return a default prompts for a plugin  
+- [x] [Prompt] Build a utility function to return a default prompts for a skill  
 - [x] [Prompt] Fix prompt building for body (e.g. "Speak")   
-- [x] [Prompt] Build a utility function to return a default prompts for a set of plugins  
-- [x] [Prompt] Build a utility function to count tokens of the plugins prompt  
-- [ ] [Prompt] Use the prompt tokens number to short or expand a plugin prompt, use LLM to summarize the prefix prompt  
+- [x] [Prompt] Build a utility function to return a default prompts for a set of skills  
+- [x] [Prompt] Build a utility function to count tokens of the skills prompt  
+- [ ] [Prompt] Use the prompt tokens number to short or expand a skills prompt, use LLM to summarize the prefix prompt  
 - [x] [CallAPI] Build a function to call API given a dictionary of parameters  
 - [x] [CallAPI] Add example for calling API  
-- [ ] [Embeddings] Add filter option (e.g. "working", "ChatGPT") to "PluginRetriever.from_directory()"  
+- [ ] [Embeddings] Add filter option (e.g. "working", "ChatGPT") to "SkillRetriever.from_directory()"  
 - [ ] [Docs] Add Sphynx docs  
-- [ ] [Verification] Build automated tests to verify new plugins  
-- [ ] [Verification] Build automated monitoring for working plugins  
+- [ ] [Verification] Build automated tests to verify new skills  
+- [ ] [Verification] Build automated monitoring for working skills  
 - [ ] [Website] Build an open-source website  
 
 #### Project Roadmap
 1. Build auxiliary functions that helps everyone to use plugins as defined by [OpenAI](https://platform.openai.com/docs/plugins/introduction)  
 2. Build in compatibility with different open-source formats (e.g. LangChain, BabyAGI, etc)  
-3. Find a best prompt format for plugins, optimizing for token number and description completness  
-4. Build a dataset to finetune open-source models to call plugins  
-5. Finetune an open-source model to call plugins  
+3. Find a best prompt format for skills, optimizing for token number and description completness  
+4. Build a dataset to finetune open-source models to call skills  
+5. Finetune an open-source model to call skills  
 6. Help with authentication  
 7. Etc.  
 
 ## Links
-- Plugins directory: [https://plugnplai.com/](https://plugnplai.com/)  
-- API reference: [https://plugnplai.github.io/](https://plugnplai.github.io/)
+- Skills directory: [https://agihub.io/](https://agithub.io/)  
+- API reference: [https://agihub.github.io/](https://agithub.github.io/)
