@@ -1,4 +1,4 @@
-# 🎸 AI Skills Hub
+# 🪄 AI Skills Hub
 
 AI Skills is an open-source library aiming to simplify the integration of AI Skills into MULTION AI.
 
