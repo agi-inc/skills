@@ -26,11 +26,11 @@ pip install multion-skills
 
 ## Usage
 
-### Get a list of plugins
+### Get a list of skills
 
-- `urls = get_plugins()`: Get a list of available plugins from a [plugins repository](https://www.plugplai.com/).
+- `urls = get_skills()`: Get a list of available skills from a [skills repository](https://www.agihub.io/).
 
-- `urls = get_plugins(filter = 'ChatGPT', category='dev')`: Use 'filter' or 'category' variables to query specific plugins
+- `urls = get_skills(filter = 'LinkedIn', category='recruiter')`: Use 'filter' or 'category' variables to query specific skills
 
 Example:
 
@@ -40,13 +40,13 @@ import multion as ai
 # Get all plugins from agihub.io
 urls = ai.get_skills()
 
-#  Get ChatGPT plugins - only ChatGPT verified plugins
-urls = ai.get_skills(filter = 'ChatGPT')
+#  Get LinkedIn skills 
+urls = ai.get_skills(filter = 'LinkedIn')
 
-#  Get working plugins - only tested plugins (in progress)
+#  Get working skills - only tested skills (in progress)
 urls = ai.get_skills(filter = 'working')
 
-#  Get plugins by category - only tested plugins (in progress)
+#  Get skills by category - only tested skills (in progress)
 urls = ai.get_skills(category = 'travel')
 
 #  Get the names list of categories
